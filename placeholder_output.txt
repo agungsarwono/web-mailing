@@ -1,0 +1,16 @@
+﻿1. Informasi Paket.docx: 1 replacements made
+1. Kerangka Acuan Kerja.docx: 1 replacements made
+10. BA Pemeriksaan Capaian 100% Pekerjaan.docx: 4 replacements made
+11. BA Serah Terima Pekerjaan Pertama.docx: 3 replacements made
+12. BA Pembayaran Prestasi Pekerjaan Termin 100%.docx: 2 replacements made
+2. Nota Dinas.docx: 1 replacements made
+3. Uraian Singkat Pekerjaan.docx: 1 replacements made
+4. SPPBJ.docx: 2 replacements made
+5. SPK.docx: 6 replacements made
+6. BAST Lokasi Kerja.docx: 4 replacements made
+7. SPMK.docx: 4 replacements made
+8. BA Pembayaran Uang Muka.docx: 0 replacements made
+9. BA Pemeriksaan Capaian 25% Pekerjaan.docx: 4 replacements made
+Rancangan Kontrak Perancangan Makam Raden Tubagus.docx: 1 replacements made
+
+Done! Output in: D:\test-project\surat-generator\public\templates_with_placeholders

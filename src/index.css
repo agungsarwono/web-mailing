@@ -1,0 +1,292 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 140 20% 98%;
+    --foreground: 150 30% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 150 30% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 30% 10%;
+    --primary: 152 58% 38%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 145 30% 94%;
+    --secondary-foreground: 150 30% 15%;
+    --muted: 145 15% 93%;
+    --muted-foreground: 150 10% 45%;
+    --accent: 145 30% 90%;
+    --accent-foreground: 150 30% 15%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 145 15% 88%;
+    --input: 145 15% 88%;
+    --ring: 152 58% 38%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 160 30% 6%;
+    --foreground: 140 20% 95%;
+    --card: 160 25% 10%;
+    --card-foreground: 140 20% 95%;
+    --popover: 160 25% 10%;
+    --popover-foreground: 140 20% 95%;
+    --primary: 152 55% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 155 20% 15%;
+    --secondary-foreground: 140 20% 95%;
+    --muted: 155 15% 18%;
+    --muted-foreground: 145 10% 55%;
+    --accent: 155 20% 15%;
+    --accent-foreground: 140 20% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 155 15% 18%;
+    --input: 155 15% 18%;
+    --ring: 152 55% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* ===== Custom Utilities ===== */
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass {
+  background: rgba(20, 40, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-hero {
+  background: linear-gradient(135deg, hsl(152, 58%, 38%) 0%, hsl(168, 55%, 32%) 50%, hsl(145, 50%, 28%) 100%);
+}
+
+.bg-gradient-subtle {
+  background: linear-gradient(135deg, hsl(140, 20%, 97%) 0%, hsl(145, 25%, 95%) 50%, hsl(150, 20%, 97%) 100%);
+}
+
+.dark .bg-gradient-subtle {
+  background: linear-gradient(135deg, hsl(160, 30%, 6%) 0%, hsl(155, 25%, 8%) 50%, hsl(160, 30%, 6%) 100%);
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  border-radius: var(--radius);
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--radius) + 1px);
+  background: linear-gradient(135deg, hsl(152, 58%, 38%), hsl(168, 55%, 45%), hsl(145, 50%, 35%));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+}
+
+/* Floating animation */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse glow */
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 hsla(152, 58%, 38%, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 4px hsla(152, 58%, 38%, 0.15);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Slide in animation */
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in-up 0.5s ease-out forwards;
+}
+
+.animate-slide-in-delay-1 {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.animate-slide-in-delay-2 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.animate-slide-in-delay-3 {
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.animate-slide-in-delay-4 {
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px -8px hsla(152, 58%, 38%, 0.15);
+}
+
+/* Checkbox animations */
+.checkbox-item {
+  transition: all 0.2s ease;
+}
+
+.checkbox-item:hover {
+  background: hsl(var(--accent));
+  transform: scale(1.01);
+}
+
+/* Button shine effect */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      transparent 100%);
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.btn-shine:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
+
+/* Decorative blobs */
+.blob-1 {
+  position: fixed;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsla(152, 58%, 38%, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob-2 {
+  position: fixed;
+  bottom: -150px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsla(168, 55%, 45%, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 4px;
+  background: hsl(var(--muted));
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, hsl(152, 58%, 38%), hsl(168, 55%, 45%));
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(152, 58%, 38%);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(152, 58%, 30%);
+}
+
+/* Input focus animation */
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 0 3px hsla(152, 58%, 38%, 0.15);
+}
