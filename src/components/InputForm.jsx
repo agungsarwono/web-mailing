@@ -100,7 +100,6 @@ export default function InputForm() {
         jangka_waktu: "120",
         masa_pelaksanaan_start: "2025-06-01", // New Date Range Start
         masa_pelaksanaan_end: "2025-09-30",   // New Date Range End
-        jenis_kontrak: "Lump Sum",
         sistem_pembayaran: "Sekaligus", // New Dropdown
         harga_negosiasi: "195000000", // New
         harga_negosiasi_huruf: "Seratus Sembilan Puluh Lima Juta Rupiah", // New
@@ -110,6 +109,10 @@ export default function InputForm() {
         nama_ppk: "MOH EKO UDYYONO, S.IP, MH",
         nip_ppk: "19730501 199311 1 002",
         jabatan_ppk: "Pembina Utama Muda",
+        nama_pejabat_ba_serah: "AGUS PRIYADI, S.T., M.M",
+        jabatan_pejabat_ba_serah: "Kepala Bidang Destinasi Pariwisata",
+        nama_instansi: "Dinas Pariwisata dan Kebudayaan",
+        alamat_instansi: "Jalan AR Hakim Nomor 51 Jepara",
 
         // Nomor & Tanggal Surat
         nomor_nota_dinas: "",
@@ -128,6 +131,7 @@ export default function InputForm() {
         tanggal_spmk: "",
         nomor_bast_lokasi: "",
         nomor_ba_25: "",
+        tanggal_ba_25: "2025-09-20",
         nomor_ba_100: "027/BA-100/PAR/2025",
         tanggal_ba_100: "2025-09-25",
         nomor_surat_permohonan_ba_100: "22/SP-100/MAPK/2025", // Surat Permohonan BA Bayar 100
@@ -135,11 +139,15 @@ export default function InputForm() {
         nomor_ba_serah1: "027/BA-ST1/PAR/2025",
         tanggal_ba_serah1: "2025-09-30",
         nomor_ba_bayar_uang_muka: "027/BA-UM/PAR/2025",
+        tanggal_ba_bayar_uang_muka: "2025-07-11",
         nomor_ba_bayar_100: "027/BA-BYR100/PAR/2025",
         tanggal_ba_bayar_100: "2025-10-05",
-        email: "",
+        nomor_konsultan_pengawas: "",
+        tanggal_konsultan_pengawas: "",
+        nomor_surat_permohonan_um: "",
+        tanggal_surat_permohonan_um: "",
+        tanggal_dokumen_hps: "2025-09-10",
         nama_bank: "",
-        no_rekening: "",
 
         // Legalitas
         no_akta: "",
@@ -442,17 +450,22 @@ export default function InputForm() {
                                     </div>
                                     {renderInput("harga_negosiasi", "Harga Negosiasi (Angka)", "92.000.000")}
                                     {renderInput("harga_negosiasi_huruf", "Harga Negosiasi (Huruf)", "Sembilan Puluh Dua Juta Rupiah")}
-                                    {renderInput("jenis_kontrak", "Jenis Kontrak", "Lumsum")}
                                 </div>
 
                                 {/* Pejabat Section */}
                                 <div className="space-y-4 border-b border-border/50 pb-4">
-                                    <h3 className="font-semibold text-primary">B. Pejabat Pembuat Komitmen (PPK)</h3>
+                                    <h3 className="font-semibold text-primary">B. Pejabat</h3>
                                     {renderInput("nama_ppk", "Nama PPK", "MOH EKO UDYYONO, S.IP, MH")}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nip_ppk", "NIP PPK", "19730501 199311 1 002")}
                                         {renderInput("jabatan_ppk", "Jabatan PPK", "Pembina Utama Muda")}
                                     </div>
+                                    {renderInput("nama_pejabat_ba_serah", "Nama Pejabat BA Serah Terima", "AGUS PRIYADI, S.T., M.M")}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {renderInput("jabatan_pejabat_ba_serah", "Jabatan Pejabat BA Serah", "Kepala Bidang Destinasi Pariwisata")}
+                                        {renderInput("nama_instansi", "Nama Instansi / Dinas", "Dinas Pariwisata dan Kebudayaan")}
+                                    </div>
+                                    {renderInput("alamat_instansi", "Alamat Instansi", "Jalan AR Hakim Nomor 51 Jepara")}
                                 </div>
 
                                 {/* Surat Section */}
@@ -503,16 +516,44 @@ export default function InputForm() {
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nomor_ba_25", "Nomor BA Capaian 25%")}
+                                        {renderInput("tanggal_ba_25", "Tanggal BA Capaian 25%", "", "date")}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nomor_ba_100", "Nomor BA Capaian 100%")}
+                                        {renderInput("tanggal_ba_100", "Tanggal BA Capaian 100%", "", "date")}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
+                                        {renderInput("nomor_surat_permohonan_ba_100", "Nomor Surat Permohonan BA 100%")}
+                                        {renderInput("tanggal_surat_permohonan_ba_100", "Tanggal Surat Permohonan BA 100%", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nomor_ba_serah1", "Nomor BA Serah Terima I")}
-                                        {renderInput("nomor_ba_bayar_100", "Nomor BA Bayar 100%")}
+                                        {renderInput("tanggal_ba_serah1", "Tanggal BA Serah Terima I", "", "date")}
                                     </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {renderInput("nomor_ba_bayar_100", "Nomor BA Bayar 100%")}
+                                        {renderInput("tanggal_ba_bayar_100", "Tanggal BA Bayar 100%", "", "date")}
+                                    </div>
+
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nomor_ba_bayar_uang_muka", "Nomor BA Uang Muka")}
-                                        {renderInput("nomor_sppump", "Nomor SPPUMP")}
+                                        {renderInput("tanggal_ba_bayar_uang_muka", "Tanggal BA Uang Muka", "", "date")}
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
+                                        {renderInput("nomor_surat_permohonan_um", "Nomor Surat Permohonan UM")}
+                                        {renderInput("tanggal_surat_permohonan_um", "Tanggal Surat Permohonan UM", "", "date")}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
+                                        {renderInput("nomor_konsultan_pengawas", "Nomor Surat Konsultan Pengawas")}
+                                        {renderInput("tanggal_konsultan_pengawas", "Tanggal Surat Konsultan Pengawas", "", "date")}
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {renderInput("tanggal_dokumen_hps", "Tanggal Dokumen HPS", "", "date")}
                                     </div>
                                 </div>
                             </CardContent>
@@ -561,17 +602,8 @@ export default function InputForm() {
                                     {renderInput("jabatan_wakil", "Jabatan Wakil", "Direktur")}
                                 </div>
                                 {renderInput("alamat", "Alamat Perusahaan", "Jl. Merdeka No. 1 Kecamatan...")}
-                                <div className="grid grid-cols-2 gap-4">
-                                    {renderInput("npwp", "NPWP", "01.234.567.8-123.000")}
-                                    {renderInput("kab_kota", "Kabupaten/Kota", "Kabupaten Jepara")}
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    {renderInput("no_telepon", "No Telepon", "08123456789")}
-                                    {renderInput("email", "Email", "email@perusahaan.com")}
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                                     {renderInput("nama_bank", "Nama Bank Penyedia", "Bank BJB")}
-                                    {renderInput("no_rekening", "No Rekening", "123-456-789")}
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-between pt-2">
