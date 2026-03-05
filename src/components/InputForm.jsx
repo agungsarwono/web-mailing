@@ -495,13 +495,13 @@ export default function InputForm() {
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
-                                        {renderInput("nomor_hasil_pl", "Nomor Hasil Pengadaan")}
-                                        {renderInput("tanggal_hasil_pl", "Tanggal Hasil Pengadaan")}
+                                        {renderInput("nomor_hasil_pl", "Nomor Surat Hasil Pengadaan")}
+                                        {renderInput("tanggal_hasil_pl", "Tanggal Surat Hasil Pengadaan", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
-                                        {renderInput("nomor_surat_penawaran", "Nomor Surat Penawaran")}
-                                        {renderInput("tanggal_surat_penawaran", "Tanggal Surat Penawaran")}
+                                        {renderInput("nomor_surat_penawaran", "Nomor Surat Penawaran Penyedia Jasa")}
+                                        {renderInput("tanggal_surat_penawaran", "Tanggal Surat Penawaran", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
@@ -522,23 +522,23 @@ export default function InputForm() {
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {renderInput("nomor_bast_lokasi", "Nomor BAST Lokasi")}
-                                        {renderInput("tanggal_inspeksi", "Tanggal Inspeksi Lapangan")}
+                                        {renderInput("nomor_bast_lokasi", "Nomor BAST Lokasi Kerja")}
+                                        {renderInput("tanggal_inspeksi", "Tanggal BAST Lokasi Kerja", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {renderInput("nomor_ba_25", "Nomor BA Capaian 25%")}
-                                        {renderInput("tanggal_ba_25", "Tanggal BA Capaian 25%", "", "date")}
+                                        {renderInput("nomor_ba_25", "Nomor BA MC25%")}
+                                        {renderInput("tanggal_ba_25", "Tanggal BA MC25%", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {renderInput("nomor_ba_100", "Nomor BA Capaian 100%")}
-                                        {renderInput("tanggal_ba_100", "Tanggal BA Capaian 100%", "", "date")}
+                                        {renderInput("nomor_ba_100", "Nomor BA MC100%")}
+                                        {renderInput("tanggal_ba_100", "Tanggal BA MC100%", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
-                                        {renderInput("nomor_surat_permohonan_ba_100", "Nomor Surat Permohonan BA 100%")}
-                                        {renderInput("tanggal_surat_permohonan_ba_100", "Tanggal Surat Permohonan BA 100%", "", "date")}
+                                        {renderInput("nomor_surat_permohonan_ba_100", "Nomor Surat Permohonan BA MC100% Penyedia Jasa")}
+                                        {renderInput("tanggal_surat_permohonan_ba_100", "Tanggal Surat Permohonan BA MC100% Penyedia Jasa", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -556,8 +556,8 @@ export default function InputForm() {
                                         {renderInput("tanggal_ba_bayar_uang_muka", "Tanggal BA Uang Muka", "", "date")}
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
-                                        {renderInput("nomor_surat_permohonan_um", "Nomor Surat Permohonan UM")}
-                                        {renderInput("tanggal_surat_permohonan_um", "Tanggal Surat Permohonan UM", "", "date")}
+                                        {renderInput("nomor_surat_permohonan_um", "Nomor Surat Permohonan UM Penyedia Jasa")}
+                                        {renderInput("tanggal_surat_permohonan_um", "Tanggal Surat Permohonan UM Penyedia Jasa", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
