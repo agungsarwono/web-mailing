@@ -340,7 +340,7 @@ export function buildReplacements(formData, templateId) {
 
     if (formData.nilai_hps) {
         // Clean formatting
-        const raw = formData.nilai_hps.replace(/[Rp\.,]/g, "").trim();
+        const raw = formData.nilai_hps.replace(/[Rp.,]/g, "").trim();
         const num = parseInt(raw); // e.g. 93000000
         // Format with separators for display
         const display = "Rp " + num.toLocaleString("id-ID") + ",00";
@@ -361,7 +361,7 @@ export function buildReplacements(formData, templateId) {
     }
 
     if (formData.harga_negosiasi) {
-        const raw = formData.harga_negosiasi.replace(/[Rp\.,]/g, "").trim();
+        const raw = formData.harga_negosiasi.replace(/[Rp.,]/g, "").trim();
         const num = parseInt(raw);
         const display = "Rp " + num.toLocaleString("id-ID") + ",00";
 
@@ -522,7 +522,7 @@ export function buildReplacements(formData, templateId) {
         // We use hps or negosiasi. Let's use harga_negosiasi if available, else HPS
         const priceVal = formData.harga_negosiasi || formData.nilai_hps;
         if (priceVal) {
-            const raw = priceVal.replace(/[Rp\.,]/g, "").trim();
+            const raw = priceVal.replace(/[Rp.,]/g, "").trim();
             const num = parseInt(raw);
             const display = "Rp " + num.toLocaleString("id-ID") + ",00";
             replacements["Rp 185.474.000,00"] = display;
@@ -548,7 +548,7 @@ export function buildReplacements(formData, templateId) {
         replacements["PENGADAAN/PEMELIHARAAN/REHABILITASI SARANA DAN PRASARANA DALAM DAYA TARIK WISATA UNGGULAN KABUPATEN/KOTA"] = formData.sub_kegiatan;
     }
     if (formData.harga_negosiasi) {
-        const raw = formData.harga_negosiasi.replace(/[Rp\.,]/g, "").trim();
+        const raw = formData.harga_negosiasi.replace(/[Rp.,]/g, "").trim();
         const num = parseInt(raw);
         const display = "Rp " + num.toLocaleString("id-ID") + ",00";
         // Also map just the number if the "Rp" parsing is disconnected from the digits in XML
@@ -711,7 +711,7 @@ export function buildReplacements(formData, templateId) {
         replacements["25 Agustus 2025"] = formatDateIndo(formData.tanggal_surat_penawaran);
     }
     if (formData.harga_negosiasi) {
-        const raw = formData.harga_negosiasi.replace(/[Rp\.,]/g, "").trim();
+        const raw = formData.harga_negosiasi.replace(/[Rp.,]/g, "").trim();
         const num = parseInt(raw);
         const display = "Rp " + num.toLocaleString("id-ID") + ",00";
         replacements["Rp 92.000.000,00"] = display;
