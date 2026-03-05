@@ -11,7 +11,7 @@ import {
     CardFooter,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { generateDocument } from "@/utils/generator";
+import { generateDocument, formatRupiahTerbilang } from "@/utils/generator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const TEMPLATES = [
@@ -161,7 +161,19 @@ export default function InputForm() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev) => {
+            const newData = { ...prev, [name]: value };
+
+            // Auto-convert number inputs to words using formatRupiahTerbilang
+            if (name === "nilai_hps") {
+                newData.nilai_hps_huruf = formatRupiahTerbilang(value);
+            }
+            if (name === "harga_negosiasi") {
+                newData.harga_negosiasi_huruf = formatRupiahTerbilang(value);
+            }
+
+            return newData;
+        });
     };
 
     const handleSelectChange = (name, value) => {
@@ -400,7 +412,7 @@ export default function InputForm() {
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {renderInput("kode_sirup", "Kode SiRUP", "60274049")}
+                                    {renderInput("kode_sirup", "Kode RUP", "60274049")}
                                     {renderInput("mak", "Mata Anggaran Kegiatan (MAK)", "3.26.02...")}
                                 </div>
                                 {renderInput("keluaran", "Keluaran (Output)", "Dokumen Perancangan Pekerjaan Konstruksi...")}
