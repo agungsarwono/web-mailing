@@ -10,12 +10,17 @@ export function replaceTextInDocx(content, replacements) {
         if (v == null) {
             sanitizedReplacements[k] = "";
         } else {
-            // Encode XML entities
-            // Encode ONLY mandatory XML entities inside text nodes
-            sanitizedReplacements[k] = v.toString()
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;');
+            let strVal = v.toString();
+            // Bypass escaping if we are intentionally injecting raw Word XML tags like <w:tab/>
+            if (strVal.includes("<w:tab/>") || strVal.includes("</w:t>")) {
+                sanitizedReplacements[k] = strVal;
+            } else {
+                // Encode ONLY mandatory XML entities inside text nodes
+                sanitizedReplacements[k] = strVal
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            }
         }
     });
 
@@ -166,7 +171,7 @@ function terbilang(n) {
     return str.trim();
 }
 
-function formatRupiahTerbilang(amountStr) {
+export function formatRupiahTerbilang(amountStr) {
     if (!amountStr) return "";
 
     // Remove cents like ",00" before stripping non-digits
@@ -178,6 +183,31 @@ function formatRupiahTerbilang(amountStr) {
     const text = terbilang(cleanNum);
     // Capitalize first letter of each word
     return text.replace(/\b\w/g, l => l.toUpperCase()) + " Rupiah";
+}
+
+export function formatDateLongIndo(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+
+    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    const dayName = days[d.getDay()];
+    const dateNum = d.getDate();
+    const monthName = months[d.getMonth()];
+    const yearNum = d.getFullYear();
+
+    const toTitleCase = (str) => str.replace(/\b\w/g, l => l.toUpperCase());
+
+    const dateSpelled = toTitleCase(terbilang(dateNum));
+    const yearSpelled = toTitleCase(terbilang(yearNum));
+
+    const dd = String(dateNum).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = yearNum;
+
+    return `${dayName} tanggal ${dateSpelled} bulan ${monthName} tahun ${yearSpelled} (${dd}-${mm}-${yyyy})`;
 }
 
 function formatDateIndo(dateStr) {
@@ -253,10 +283,18 @@ export function buildReplacements(formData, templateId) {
         replacements["PENGADAAN/ PEMELIHARAAN/ REHABILITASISARANA DAN PRASARANADALAM DAYA TARIK WISATA UNGGULAN KABUPATEN/ KOTA"] = formData.sub_kegiatan.toUpperCase();
     }
 
+    if (formData.sistem_pembayaran) {
+        // Using explicit <w:tab/> injection to ensure perfect Microsoft Word alignment layout
+        replacements["Sistem Pembayaran:pembayaran secara sekaligus"] = `Sistem Pembayaran</w:t><w:tab/><w:t>: pembayaran secara ${formData.sistem_pembayaran.toLowerCase()}`;
+        // Fallback in case there are variations
+        replacements["Sistem Pembayaran : pembayaran secara sekaligus"] = `Sistem Pembayaran</w:t><w:tab/><w:t>: pembayaran secara ${formData.sistem_pembayaran.toLowerCase()}`;
+    }
+
     // --- 2. MAK & Keluaran (New) ---
     if (formData.mak) {
         // Target specific string from the template
         replacements["3.26.02.2.01.0005.5.1.02.01.01.0039.8.1.0.20.20.90.002.00005"] = formData.mak;
+        replacements["3.26.02.2.01.0005.5.1.02.01.01.0039.1.3.0.30.10.10.001.00005"] = formData.mak;
         // Also try spaced version just in case
         replacements["3.26.02.2.01. 0005.5.1.02.0 1.01.0039.8.1 .0.20.20.90.0 02.00005"] = formData.mak;
     }
@@ -267,6 +305,7 @@ export function buildReplacements(formData, templateId) {
         // Re-reading KAK text: "Dokumen Perancangan Pekerjaan Konstruksi {paket_pengadaan}" IS the keluaran.
         // If user wants to replace the WHOLE sentence with custom input:
         replacements["Dokumen Perancangan Pekerjaan Konstruksi {paket_pengadaan}"] = formData.keluaran;
+        replacements["Rehabilitasi Bangunan Gedung Transit dan Gudang"] = formData.keluaran;
     }
     if (formData.hps_keluaran) {
         replacements["4.000.000,-"] = formData.hps_keluaran;
@@ -308,6 +347,7 @@ export function buildReplacements(formData, templateId) {
 
         replacements["Rp 4.000.000,00"] = display;
         replacements["Rp 93.000.000,00"] = display;
+        replacements["93.000.000,00"] = display.replace("Rp ", ""); // For the HPS table specifically
         replacements["{HPS_NOMINAL}"] = display;
 
         // Terbilang auto-generation if not manually provided?
@@ -381,6 +421,7 @@ export function buildReplacements(formData, templateId) {
     // Nota Dinas
     if (formData.nomor_nota_dinas) replacements["027/3-019/2024"] = formData.nomor_nota_dinas;
     if (formData.tanggal_nota_dinas) replacements["20 Agustus 2025"] = formatDateIndo(formData.tanggal_nota_dinas);
+    if (formData.kode_sirup) replacements["60274049"] = formData.kode_sirup;
 
     // SPPBJ
     if (formData.nomor_sppbj) replacements["027.2/3-005.1"] = formData.nomor_sppbj;
@@ -396,6 +437,25 @@ export function buildReplacements(formData, templateId) {
             const spkDate = formatDateIndo(formData.tanggal_spk);
             replacements["Tanggal 26 September 2025"] = "Tanggal " + spkDate;
         }
+
+        // Handle Source of Funds Literal specific to Ringkasan Kontrak
+        if (formData.sumber_anggaran) {
+            replacements["Anggaran Pendapatan dan Belanja Daerah (APBD) Kabupaten Jepara Tahun Perubahan 2025"] = formData.sumber_anggaran;
+        }
+        // Handle Bank Name Literal specific to Ringkasan Kontrak
+        if (formData.nama_bank) {
+            replacements["BPD Bank Jateng"] = formData.nama_bank;
+        }
+
+        // Handle Source of Funds Literal
+        if (formData.sumber_anggaran) {
+            replacements["Anggaran Pendapatan dan Belanja Daerah (APBD) Kabupaten Jepara Tahun Perubahan 2025"] = formData.sumber_anggaran;
+        }
+        // Handle Bank Name Literal
+        if (formData.nama_bank) {
+            replacements["BPD Bank Jateng"] = formData.nama_bank;
+        }
+
         if (formData.spmk_tanggal_mulai || formData.tanggal_spmk) {
             const spmkDate = formatDateIndo(formData.spmk_tanggal_mulai || formData.tanggal_spmk);
             replacements["Jepara, 26 September 2025"] = "Jepara, " + spmkDate;
@@ -435,6 +495,7 @@ export function buildReplacements(formData, templateId) {
     }
     if (formData.lokasi_pekerjaan) {
         replacements["Makam Tubagus Kelurahan Karangkebagusan Kabupaten Jepara"] = formData.lokasi_pekerjaan;
+        replacements["Makam Raden Tubagus Kelurahan Karangkebagusan. Kecamatan Jepara Kabupaten Jepara."] = formData.lokasi_pekerjaan;
         replacements["Desa X, Kecamatan Y, Kabupaten Z"] = formData.lokasi_pekerjaan;
         replacements["Penataan Area Dermaga Pantai Tirta Samudra Bandengan"] = formData.paket_pengadaan; // Often location/paket is used interchangeably in text
     }
@@ -512,29 +573,134 @@ export function buildReplacements(formData, templateId) {
     }
     if (formData.sumber_anggaran) {
         replacements["Anggaran Pendapatan dan Belanja Daerah Kabupaten Jepara Tahun 2024."] = formData.sumber_anggaran;
+        replacements["Anggaran Pendapatan dan Belanja Daerah Perubahan (APBDP) Kabupaten Jepara Tahun 2025"] = formData.sumber_anggaran;
+        replacements["Anggaran Pendapatan dan Belanja Daerah Perubahan (APBDP) Kabupaten Jepara Tahun Perubahan 2025"] = formData.sumber_anggaran;
     }
 
-    // Nomor BA Specifics
-    if (formData.nomor_ba_25) replacements["027.2/3-013.8/FISIK/2025"] = formData.nomor_ba_25;
-    if (formData.nomor_ba_100) replacements["027.2/3-013.9/FISIK/2025"] = formData.nomor_ba_100;
-    if (formData.nomor_ba_serah1) replacements["027.2/3-013.10/FISIK/2025"] = formData.nomor_ba_serah1;
-    if (formData.nomor_ba_bayar_100) replacements["027.2/3-013.11/FISIK/2025"] = formData.nomor_ba_bayar_100;
+    // BA Capaian 25%
+    if (formData.nomor_ba_25) replacements["027.2/3-013.2/FISIK/2025"] = formData.nomor_ba_25;
+    if (formData.tanggal_ba_25 && templateId === 'ba_25') {
+        replacements["Kamis tanggal Tiga Puluh bulan Oktober tahun Dua Ribu Dua Puluh Lima (30-10-2025)"] = formatDateLongIndo(formData.tanggal_ba_25);
+    }
+    if (formData.nomor_konsultan_pengawas && formData.tanggal_konsultan_pengawas) {
+        // Targets "Konsultan Pengawas nomor : 002/DAH/X/2025 tanggal 11 Januari 2025 " literal text
+        replacements["002/DAH/X/2025"] = formData.nomor_konsultan_pengawas;
+        replacements["11 Januari 2025"] = formatDateIndo(formData.tanggal_konsultan_pengawas);
+    }
 
+    // BA Capaian 100%
+    if (formData.nomor_ba_100) replacements["027.2/3-013.3/FISIK/2025"] = formData.nomor_ba_100;
+    if (formData.tanggal_ba_100 && templateId === 'ba_100') {
+        replacements["Senin tanggal Delapan bulan Desember tahun Dua Ribu Dua Puluh Lima (08-12-2025)"] = formatDateLongIndo(formData.tanggal_ba_100);
+    }
+    if (formData.nomor_konsultan_pengawas && formData.tanggal_konsultan_pengawas) {
+        // Targets "Konsultan Pengawas nomor : 004/DAH/XII/2025 tanggal 25 November 2025 " literal text
+        replacements["004/DAH/XII/2025"] = formData.nomor_konsultan_pengawas;
+        replacements["25 November 2025"] = formatDateIndo(formData.tanggal_konsultan_pengawas);
+    }
+
+    // BA Serah Terima Pertama
+    if (formData.nomor_ba_serah1) replacements["027.2/3-013.4/FISIK/2025"] = formData.nomor_ba_serah1;
+    if (formData.tanggal_ba_serah1 && templateId === 'ba_serah1') {
+        replacements["Selasa tanggal Sembilan bulan Desember tahun Dua Ribu Dua Puluh Lima (09-12-2025)"] = formatDateLongIndo(formData.tanggal_ba_serah1);
+    }
+    if (templateId === 'ba_serah1' && formData.nama_pejabat_ba_serah) {
+        replacements["AGUS PRIYADI, S.T., M.M"] = formData.nama_pejabat_ba_serah;
+    }
+    if (templateId === 'ba_serah1' && formData.jabatan_pejabat_ba_serah) {
+        const fullJab = formData.nama_instansi ? `${formData.jabatan_pejabat_ba_serah} ${formData.nama_instansi}` : formData.jabatan_pejabat_ba_serah;
+        replacements["Pejabat Penandatangan Kontrak Dinas Pariwisata dan Kebudayaan Kabupaten Jepara"] = fullJab;
+    }
+    if (templateId === 'ba_serah1' && formData.alamat_instansi) {
+        replacements["Jalan AR Hakim Nomor 51 Jepara"] = formData.alamat_instansi;
+    }
+
+    // BA Bayar Uang Muka
+    if (formData.nomor_ba_bayar_uang_muka) {
+        replacements["027.2/3-013.1/FISIK/2025"] = formData.nomor_ba_bayar_uang_muka; // Existent target
+        replacements["934/3-016.1"] = formData.nomor_ba_bayar_uang_muka; // Specific missed target
+    }
+    if (formData.jabatan_wakil && formData.nama_badan_usaha) {
+        replacements["Direktur CV. MULTI KARYA"] = `${formData.jabatan_wakil} ${formData.nama_badan_usaha}`;
+    }
+    if (formData.nomor_surat_permohonan_um) {
+        replacements["[nomor surat permohonan pembayaran uang muka pekerjaan]"] = formData.nomor_surat_permohonan_um;
+    }
+    if (formData.tanggal_surat_permohonan_um) {
+        replacements["[tanggal surat permohonan pembayaran uang muka pekerjaan]"] = formatDateIndo(formData.tanggal_surat_permohonan_um);
+    }
+    if (formData.paket_pengadaan) {
+        replacements["Konstruksi Pembangunan Tempat Parkir Pantai Tirta Samudera Bandengan"] = formData.paket_pengadaan;
+    }
+    if (formData.tanggal_ba_bayar_uang_muka) {
+        replacements["Kamis tanggal sebelas bulan Juli tahun dua ribu dua puluh empat (11-07-2024)"] = formatDateLongIndo(formData.tanggal_ba_bayar_uang_muka);
+
+        // Month and Year extraction for the signature location "Jepara,   Juli 2024"
+        const d = new Date(formData.tanggal_ba_bayar_uang_muka);
+        if (!isNaN(d.getTime())) {
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const monthName = months[d.getMonth()];
+            replacements["Juli 2024"] = `${monthName} ${d.getFullYear()}`;
+            replacements["Jepara,        Juli 2024"] = `Jepara, ${monthName} ${d.getFullYear()}`;
+        }
+    }
+    if (formData.nama_badan_usaha) {
+        replacements["Penyedia\nCV. MULTI KARYA"] = `Penyedia\n${formData.nama_badan_usaha}`;
+        replacements["Penyedia</w:t></w:r><w:r><w:t>CV. MULTI KARYA"] = `Penyedia</w:t></w:r><w:r><w:t>${formData.nama_badan_usaha}`;
+        replacements["Penyedia CV. MULTI KARYA"] = `Penyedia\n${formData.nama_badan_usaha}`;
+        replacements["CV. MULTI KARYA"] = formData.nama_badan_usaha;
+    }
+    if (formData.nama_wakil && formData.jabatan_wakil) {
+        // Signee replacements: Name and Role
+        replacements["ABDUL HAKIM"] = formData.nama_wakil;
+        replacements["Direktur"] = formData.jabatan_wakil;
+        replacements["ABDUL HAKIM\nDirektur"] = `${formData.nama_wakil}\n${formData.jabatan_wakil}`;
+        replacements["ABDUL HAKIM</w:t></w:r><w:r><w:t>Direktur"] = `${formData.nama_wakil}</w:t></w:r><w:r><w:t>${formData.jabatan_wakil}`;
+    }
+
+    // BA Bayar 100%
+    if (formData.nomor_ba_bayar_100) replacements["027.2/3-013.6/FISIK/2025"] = formData.nomor_ba_bayar_100;
+    if (formData.tanggal_ba_bayar_100 && templateId === 'ba_bayar100') {
+        replacements["Senin tanggal Delapan bulan Desember tahun Dua Ribu Dua Puluh Lima (08-12-2025)"] = formatDateLongIndo(formData.tanggal_ba_bayar_100);
+    }
     // Robustness: If BA 100% contains the BA 25% number (copy-paste error in template), replace it too
     if (templateId === 'ba_100' && formData.nomor_ba_100) {
         replacements["027.2/3-013.8/FISIK/2025"] = formData.nomor_ba_100;
     }
 
-    // Placeholders in BA Bayar
-    // Placeholders in BA Bayar
-    if (formData.nomor_surat) { // Generic fallback
-        replacements["[nomor surat]"] = formData.nomor_surat;
+    // BAST (Berita Acara Serah Terima) Specifics
+    if (formData.nomor_spk) {
+        replacements["027.2/3-007.1"] = formData.nomor_spk;
     }
-    if (formData.tanggal_surat) {
-        replacements["[tanggal surat]"] = formatDateIndo(formData.tanggal_surat);
+    if (formData.lokasi_pekerjaan) {
+        replacements["Makam Raden Tubagus Kelurahan Karangkebagusan."] = formData.lokasi_pekerjaan;
+        // In case the template doesn't have the period at the end
+        replacements["Makam Raden Tubagus Kelurahan Karangkebagusan"] = formData.lokasi_pekerjaan;
+    }
+    // BA Bayar 100%
+    if (templateId === 'ba_bayar100') {
+        if (formData.nomor_surat_permohonan_ba_100) {
+            replacements["[nomor surat]"] = formData.nomor_surat_permohonan_ba_100;
+        }
+        if (formData.tanggal_surat_permohonan_ba_100) {
+            replacements["[tanggal surat]"] = formatDateIndo(formData.tanggal_surat_permohonan_ba_100);
+        }
+        if (formData.tanggal_ba_bayar_100) {
+            const d100 = new Date(formData.tanggal_ba_bayar_100);
+            if (!isNaN(d100.getTime())) {
+                const mo100 = [
+                    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                ][d100.getMonth()];
+                replacements["Jepara,      Desember 2025"] = `Jepara,      ${mo100} ${d100.getFullYear()}`;
+            }
+        }
     }
 
-    // SPPBJ Specifics
+    // SPPBJ & HPS Specifics
+    if (formData.tanggal_dokumen_hps) {
+        replacements["Jepara, 10 September 2025"] = `Jepara, ${formatDateIndo(formData.tanggal_dokumen_hps)}`;
+    }
     if (formData.tanggal_sppbj) {
         replacements["11 Mei 2020"] = formatDateIndo(formData.tanggal_sppbj);
     }

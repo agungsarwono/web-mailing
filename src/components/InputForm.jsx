@@ -84,27 +84,27 @@ export default function InputForm() {
 
     const [formData, setFormData] = useState({
         // Informasi Kegiatan
-        sub_kegiatan: "",
-        paket_pengadaan: "",
-        lokasi_pekerjaan: "",
-        sumber_anggaran: "",
-        pagu_anggaran: "",
-        nilai_hps: "",
-        nilai_hps_huruf: "",
-        kode_sirup: "",
-        mata_anggaran: "", // MAK
-        keluaran: "", // Keluaran Output
-        hps_keluaran: "", // HPS Keluaran Output
+        sub_kegiatan: "Pengembangan Infrastruktur Wisata Pantai",
+        paket_pengadaan: "Pembangunan Gazebo dan Fasilitas Pantai Tirta Samudra",
+        lokasi_pekerjaan: "Pantai Tirta Samudra Bandengan",
+        sumber_anggaran: "APBD 2025",
+        pagu_anggaran: "200000000",
+        nilai_hps: "198000000",
+        nilai_hps_huruf: "Seratus Sembilan Puluh Delapan Juta Rupiah",
+        kode_sirup: "12345678",
+        mata_anggaran: "1.02.01.2.03.04", // MAK
+        keluaran: "Terbangunnya 3 unit gazebo wisata", // Keluaran Output
+        hps_keluaran: "3 unit", // HPS Keluaran Output
 
         // Detail Kontrak
-        jangka_waktu: "",
-        masa_pelaksanaan_start: "", // New Date Range Start
-        masa_pelaksanaan_end: "",   // New Date Range End
-        jenis_kontrak: "",
+        jangka_waktu: "120",
+        masa_pelaksanaan_start: "2025-06-01", // New Date Range Start
+        masa_pelaksanaan_end: "2025-09-30",   // New Date Range End
+        jenis_kontrak: "Lump Sum",
         sistem_pembayaran: "Sekaligus", // New Dropdown
-        harga_negosiasi: "", // New
-        harga_negosiasi_huruf: "", // New
-        tanggal_inspeksi: "", // New
+        harga_negosiasi: "195000000", // New
+        harga_negosiasi_huruf: "Seratus Sembilan Puluh Lima Juta Rupiah", // New
+        tanggal_inspeksi: "2025-05-20", // New
 
         // Pejabat (Editable)
         nama_ppk: "MOH EKO UDYYONO, S.IP, MH",
@@ -128,20 +128,15 @@ export default function InputForm() {
         tanggal_spmk: "",
         nomor_bast_lokasi: "",
         nomor_ba_25: "",
-        nomor_ba_100: "",
-        nomor_ba_serah1: "",
-        nomor_ba_bayar_uang_muka: "",
-        nomor_ba_bayar_100: "",
-        nomor_sppump: "", // Surat Perintah Pembayaran Uang Muka
-
-        // Data Penyedia
-        nama_badan_usaha: "",
-        nama_wakil: "",
-        jabatan_wakil: "",
-        alamat: "",
-        npwp: "",
-        kab_kota: "",
-        no_telepon: "",
+        nomor_ba_100: "027/BA-100/PAR/2025",
+        tanggal_ba_100: "2025-09-25",
+        nomor_surat_permohonan_ba_100: "22/SP-100/MAPK/2025", // Surat Permohonan BA Bayar 100
+        tanggal_surat_permohonan_ba_100: "2025-09-26", // Tanggal Surat Permohonan BA Bayar 100
+        nomor_ba_serah1: "027/BA-ST1/PAR/2025",
+        tanggal_ba_serah1: "2025-09-30",
+        nomor_ba_bayar_uang_muka: "027/BA-UM/PAR/2025",
+        nomor_ba_bayar_100: "027/BA-BYR100/PAR/2025",
+        tanggal_ba_bayar_100: "2025-10-05",
         email: "",
         nama_bank: "",
         no_rekening: "",
