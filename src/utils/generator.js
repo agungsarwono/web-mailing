@@ -420,7 +420,10 @@ export function buildReplacements(formData, templateId) {
 
     // Nota Dinas
     if (formData.nomor_nota_dinas) replacements["027/3-019/2024"] = formData.nomor_nota_dinas;
-    if (formData.tanggal_nota_dinas) replacements["20 Agustus 2025"] = formatDateIndo(formData.tanggal_nota_dinas);
+    if (formData.tanggal_nota_dinas) {
+        replacements["Tanggal:20 Agustus 2025"] = "Tanggal:" + formatDateIndo(formData.tanggal_nota_dinas);
+        replacements["Tanggal: 20 Agustus 2025"] = "Tanggal: " + formatDateIndo(formData.tanggal_nota_dinas);
+    }
     if (formData.kode_sirup) replacements["60274049"] = formData.kode_sirup;
 
     // SPPBJ
@@ -702,6 +705,7 @@ export function buildReplacements(formData, templateId) {
         const formattedHpsDate = formatDateIndo(formData.tanggal_dokumen_hps);
         // Replace in HPS and KAK templates
         replacements["Jepara, 10 September 2025"] = `Jepara, ${formattedHpsDate}`;
+        replacements["Jepara, 20 Agustus 2025"] = `Jepara, ${formattedHpsDate}`; // Target KAK docx specific format
         // Additional replacement format sometimes found in other templates
         replacements["10 September 2025"] = formattedHpsDate;
     }
