@@ -425,8 +425,8 @@ export function buildReplacements(formData, templateId) {
     // Nota Dinas
     if (formData.nomor_nota_dinas) replacements["027/3-019/2024"] = formData.nomor_nota_dinas;
     if (formData.tanggal_nota_dinas) {
-        replacements["Tanggal:20 Agustus 2025"] = "Tanggal:" + formatDateIndo(formData.tanggal_nota_dinas);
-        replacements["Tanggal: 20 Agustus 2025"] = "Tanggal: " + formatDateIndo(formData.tanggal_nota_dinas);
+        replacements["Tanggal:20 Agustus 2025"] = "Tanggal</w:t><w:tab/><w:tab/><w:t>: " + formatDateIndo(formData.tanggal_nota_dinas);
+        replacements["Tanggal: 20 Agustus 2025"] = "Tanggal</w:t><w:tab/><w:tab/><w:t>: " + formatDateIndo(formData.tanggal_nota_dinas);
     }
     if (formData.kode_sirup) replacements["60274049"] = formData.kode_sirup;
 
@@ -585,7 +585,10 @@ export function buildReplacements(formData, templateId) {
     }
 
     // BA Capaian 25%
-    if (formData.nomor_ba_25) replacements["027.2/3-013.2/FISIK/2025"] = formData.nomor_ba_25;
+    if (formData.nomor_ba_25) {
+        replacements["027.2/3-013.2/FISIK/2025"] = formData.nomor_ba_25;
+        if (templateId === 'ba_25') replacements["027.2/3-013.8/FISIK/2025"] = formData.nomor_ba_25;
+    }
     if (formData.tanggal_ba_25 && templateId === 'ba_25') {
         replacements["Kamis tanggal Tiga Puluh bulan Oktober tahun Dua Ribu Dua Puluh Lima (30-10-2025)"] = formatDateLongIndo(formData.tanggal_ba_25);
     }
@@ -596,7 +599,12 @@ export function buildReplacements(formData, templateId) {
     }
 
     // BA Capaian 100%
-    if (formData.nomor_ba_100) replacements["027.2/3-013.3/FISIK/2025"] = formData.nomor_ba_100;
+    if (formData.nomor_ba_100) {
+        replacements["027.2/3-013.3/FISIK/2025"] = formData.nomor_ba_100;
+        if (templateId === 'ba_100') replacements["027.2/3-013.9/FISIK/2025"] = formData.nomor_ba_100;
+        // Legacy copy-paste fallback
+        if (templateId === 'ba_100') replacements["027.2/3-013.8/FISIK/2025"] = formData.nomor_ba_100;
+    }
     if (formData.tanggal_ba_100 && templateId === 'ba_100') {
         replacements["Senin tanggal Delapan bulan Desember tahun Dua Ribu Dua Puluh Lima (08-12-2025)"] = formatDateLongIndo(formData.tanggal_ba_100);
     }
@@ -607,7 +615,13 @@ export function buildReplacements(formData, templateId) {
     }
 
     // BA Serah Terima Pertama
-    if (formData.nomor_ba_serah1) replacements["027.2/3-013.4/FISIK/2025"] = formData.nomor_ba_serah1;
+    if (formData.nomor_ba_serah1) {
+        replacements["027.2/3-013.4/FISIK/2025"] = formData.nomor_ba_serah1;
+        if (templateId === 'ba_serah1') {
+            replacements["027.2/3-013.10/FISIK/2025"] = formData.nomor_ba_serah1;
+            replacements["027.2/3-013.11/FISIK/2025"] = formData.nomor_ba_serah1;
+        }
+    }
     if (formData.tanggal_ba_serah1 && templateId === 'ba_serah1') {
         replacements["Selasa tanggal Sembilan bulan Desember tahun Dua Ribu Dua Puluh Lima (09-12-2025)"] = formatDateLongIndo(formData.tanggal_ba_serah1);
     }
@@ -665,14 +679,14 @@ export function buildReplacements(formData, templateId) {
     }
 
     // BA Bayar 100%
-    if (formData.nomor_ba_bayar_100) replacements["027.2/3-013.6/FISIK/2025"] = formData.nomor_ba_bayar_100;
+    if (formData.nomor_ba_bayar_100) {
+        replacements["027.2/3-013.6/FISIK/2025"] = formData.nomor_ba_bayar_100;
+        if (templateId === 'ba_bayar100') replacements["027.2/3-013.11/FISIK/2025"] = formData.nomor_ba_bayar_100;
+    }
     if (formData.tanggal_ba_bayar_100 && templateId === 'ba_bayar100') {
         replacements["Senin tanggal Delapan bulan Desember tahun Dua Ribu Dua Puluh Lima (08-12-2025)"] = formatDateLongIndo(formData.tanggal_ba_bayar_100);
     }
-    // Robustness: If BA 100% contains the BA 25% number (copy-paste error in template), replace it too
-    if (templateId === 'ba_100' && formData.nomor_ba_100) {
-        replacements["027.2/3-013.8/FISIK/2025"] = formData.nomor_ba_100;
-    }
+    // Robustness checks removed because they are handled in explicit blocks above
 
     // BAST (Berita Acara Serah Terima) Specifics
     if (formData.nomor_spk) {
