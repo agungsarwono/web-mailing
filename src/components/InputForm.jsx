@@ -417,6 +417,9 @@ export default function InputForm() {
                                 </div>
                                 {renderInput("keluaran", "Keluaran (Output)", "Dokumen Perancangan Pekerjaan Konstruksi...")}
                                 {renderInput("hps_keluaran", "Nilai HPS Keluaran", "Misal: 4.000.000,-")}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {renderInput("tanggal_dokumen_hps", "Tanggal Dokumen HPS/KAK", "", "date")}
+                                </div>
                             </CardContent>
                             <CardFooter className="flex justify-end pt-2">
                                 <Button
@@ -563,9 +566,6 @@ export default function InputForm() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
                                         {renderInput("nomor_konsultan_pengawas", "Nomor Surat Konsultan Pengawas")}
                                         {renderInput("tanggal_konsultan_pengawas", "Tanggal Surat Konsultan Pengawas", "", "date")}
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {renderInput("tanggal_dokumen_hps", "Tanggal Dokumen HPS", "", "date")}
                                     </div>
                                 </div>
                             </CardContent>

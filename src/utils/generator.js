@@ -699,7 +699,11 @@ export function buildReplacements(formData, templateId) {
 
     // SPPBJ & HPS Specifics
     if (formData.tanggal_dokumen_hps) {
-        replacements["Jepara, 10 September 2025"] = `Jepara, ${formatDateIndo(formData.tanggal_dokumen_hps)}`;
+        const formattedHpsDate = formatDateIndo(formData.tanggal_dokumen_hps);
+        // Replace in HPS and KAK templates
+        replacements["Jepara, 10 September 2025"] = `Jepara, ${formattedHpsDate}`;
+        // Additional replacement format sometimes found in other templates
+        replacements["10 September 2025"] = formattedHpsDate;
     }
     if (formData.tanggal_sppbj) {
         replacements["11 Mei 2020"] = formatDateIndo(formData.tanggal_sppbj);
