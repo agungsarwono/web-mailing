@@ -381,10 +381,14 @@ export function buildReplacements(formData, templateId) {
         replacements["19730501 199311 1 002"] = formData.nip_ppk;
         replacements["19761017 200501 1 006"] = formData.nip_ppk;
     }
-
-    // Globally erase default PPK titles so it only prints Name and NIP in default signatures
-    replacements["Pembina Utama Muda"] = " ";
-    replacements["Penata Tingkat I"] = " ";
+    if (formData.jabatan_ppk) {
+        replacements["Pembina Utama Muda"] = formData.jabatan_ppk;
+        replacements["Penata Tingkat I"] = formData.jabatan_ppk;
+    }
+    if (formData.golongan_ppk) {
+        replacements["IV/c"] = formData.golongan_ppk; // Example placeholder, adjust as needed
+        replacements["III/d"] = formData.golongan_ppk; // Example placeholder, adjust as needed
+    }
 
     // --- SPMK Specifics (Hoisted to prevent "9 Agustus 2023" date string collisions with Tanggal SPK) ---
     if (formData.spmk_tanggal_selesai) { // NEW EXCLUSIVE FIELD
@@ -585,10 +589,10 @@ export function buildReplacements(formData, templateId) {
     if (formData.tanggal_ba_25 && templateId === 'ba_25') {
         replacements["Kamis tanggal Tiga Puluh bulan Oktober tahun Dua Ribu Dua Puluh Lima (30-10-2025)"] = formatDateLongIndo(formData.tanggal_ba_25);
     }
-    if (formData.nomor_konsultan_pengawas && formData.tanggal_konsultan_pengawas) {
+    if (formData.nomor_surat_permohonan_ba_25 && formData.tanggal_surat_permohonan_ba_25) {
         // Targets "Konsultan Pengawas nomor : 002/DAH/X/2025 tanggal 11 Januari 2025 " literal text
-        replacements["002/DAH/X/2025"] = formData.nomor_konsultan_pengawas;
-        replacements["11 Januari 2025"] = formatDateIndo(formData.tanggal_konsultan_pengawas);
+        replacements["002/DAH/X/2025"] = formData.nomor_surat_permohonan_ba_25;
+        replacements["11 Januari 2025"] = formatDateIndo(formData.tanggal_surat_permohonan_ba_25);
     }
 
     // BA Capaian 100%
@@ -596,10 +600,10 @@ export function buildReplacements(formData, templateId) {
     if (formData.tanggal_ba_100 && templateId === 'ba_100') {
         replacements["Senin tanggal Delapan bulan Desember tahun Dua Ribu Dua Puluh Lima (08-12-2025)"] = formatDateLongIndo(formData.tanggal_ba_100);
     }
-    if (formData.nomor_konsultan_pengawas && formData.tanggal_konsultan_pengawas) {
+    if (formData.nomor_surat_permohonan_ba_25 && formData.tanggal_surat_permohonan_ba_25) {
         // Targets "Konsultan Pengawas nomor : 004/DAH/XII/2025 tanggal 25 November 2025 " literal text
-        replacements["004/DAH/XII/2025"] = formData.nomor_konsultan_pengawas;
-        replacements["25 November 2025"] = formatDateIndo(formData.tanggal_konsultan_pengawas);
+        replacements["004/DAH/XII/2025"] = formData.nomor_surat_permohonan_ba_25;
+        replacements["25 November 2025"] = formatDateIndo(formData.tanggal_surat_permohonan_ba_25);
     }
 
     // BA Serah Terima Pertama
@@ -610,8 +614,8 @@ export function buildReplacements(formData, templateId) {
     if (templateId === 'ba_serah1' && formData.nama_ppk) {
         replacements["AGUS PRIYADI, S.T., M.M"] = formData.nama_ppk;
     }
-    if (templateId === 'ba_serah1' && formData.jabatan_ppk) {
-        replacements["Pejabat Penandatangan Kontrak Dinas Pariwisata dan Kebudayaan Kabupaten Jepara"] = formData.jabatan_ppk;
+    if (templateId === 'ba_serah1' && formData.golongan_ppk) {
+        replacements["Pejabat Penandatangan Kontrak Dinas Pariwisata dan Kebudayaan Kabupaten Jepara"] = formData.golongan_ppk;
     }
     if (templateId === 'ba_serah1' && formData.alamat_instansi) {
         replacements["Jalan AR Hakim Nomor 51 Jepara"] = formData.alamat_instansi;

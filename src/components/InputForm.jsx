@@ -109,6 +109,7 @@ export default function InputForm() {
         nama_ppk: "MOH EKO UDYYONO, S.IP, MH",
         nip_ppk: "19730501 199311 1 002",
         jabatan_ppk: "Pembina Utama Muda",
+        golongan_ppk: "Wakil Ketua CV. Nan Nin",
         nama_pejabat_ba_serah: "AGUS PRIYADI, S.T., M.M",
         jabatan_pejabat_ba_serah: "Kepala Bidang Destinasi Pariwisata",
         nama_instansi: "Dinas Pariwisata dan Kebudayaan",
@@ -142,8 +143,8 @@ export default function InputForm() {
         tanggal_ba_bayar_uang_muka: "2025-07-11",
         nomor_ba_bayar_100: "027/BA-BYR100/PAR/2025",
         tanggal_ba_bayar_100: "2025-10-05",
-        nomor_konsultan_pengawas: "",
-        tanggal_konsultan_pengawas: "",
+        nomor_surat_permohonan_ba_25: "",
+        tanggal_surat_permohonan_ba_25: "",
         nomor_surat_permohonan_um: "",
         tanggal_surat_permohonan_um: "",
         tanggal_dokumen_hps: "2025-09-10",
@@ -472,8 +473,9 @@ export default function InputForm() {
                                     {renderInput("nama_ppk", "Nama PPK", "MOH EKO UDYYONO, S.IP, MH")}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nip_ppk", "NIP PPK", "19730501 199311 1 002")}
-                                        {renderInput("jabatan_ppk", "Jabatan PPK", "Wakil Ketua CV. Nan Nin")}
+                                        {renderInput("jabatan_ppk", "Jabatan PPK", "Pembina Utama Muda")}
                                     </div>
+                                    {renderInput("golongan_ppk", "Golongan/Jabatan Wakil BAST", "Wakil Ketua CV. Nan Nin")}
                                 </div>
 
                                 {/* Surat Section */}
@@ -523,8 +525,22 @@ export default function InputForm() {
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {renderInput("nomor_ba_bayar_uang_muka", "Nomor BA Uang Muka")}
+                                        {renderInput("tanggal_ba_bayar_uang_muka", "Tanggal BA Uang Muka", "", "date")}
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
+                                        {renderInput("nomor_surat_permohonan_um", "Nomor Surat Permohonan UM Penyedia Jasa")}
+                                        {renderInput("tanggal_surat_permohonan_um", "Tanggal Surat Permohonan UM Penyedia Jasa", "", "date")}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nomor_ba_25", "Nomor BA MC25%")}
                                         {renderInput("tanggal_ba_25", "Tanggal BA MC25%", "", "date")}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
+                                        {renderInput("nomor_surat_permohonan_ba_25", "Nomor Surat Permohonan BA MC25% Penyedia Jasa")}
+                                        {renderInput("tanggal_surat_permohonan_ba_25", "Tanggal Surat Permohonan BA MC25% Penyedia Jasa", "", "date")}
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -545,20 +561,6 @@ export default function InputForm() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nomor_ba_bayar_100", "Nomor BA Bayar 100%")}
                                         {renderInput("tanggal_ba_bayar_100", "Tanggal BA Bayar 100%", "", "date")}
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {renderInput("nomor_ba_bayar_uang_muka", "Nomor BA Uang Muka")}
-                                        {renderInput("tanggal_ba_bayar_uang_muka", "Tanggal BA Uang Muka", "", "date")}
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
-                                        {renderInput("nomor_surat_permohonan_um", "Nomor Surat Permohonan UM Penyedia Jasa")}
-                                        {renderInput("tanggal_surat_permohonan_um", "Tanggal Surat Permohonan UM Penyedia Jasa", "", "date")}
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-3 rounded-lg">
-                                        {renderInput("nomor_konsultan_pengawas", "Nomor Surat Konsultan Pengawas")}
-                                        {renderInput("tanggal_konsultan_pengawas", "Tanggal Surat Konsultan Pengawas", "", "date")}
                                     </div>
                                 </div>
                             </CardContent>
