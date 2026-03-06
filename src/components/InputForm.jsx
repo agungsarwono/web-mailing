@@ -467,20 +467,13 @@ export default function InputForm() {
                                     {renderInput("harga_negosiasi_huruf", "Harga Negosiasi (Huruf)", "Sembilan Puluh Dua Juta Rupiah")}
                                 </div>
 
-                                {/* Pejabat Section */}
                                 <div className="space-y-4 border-b border-border/50 pb-4">
                                     <h3 className="font-semibold text-primary">B. Pejabat</h3>
                                     {renderInput("nama_ppk", "Nama PPK", "MOH EKO UDYYONO, S.IP, MH")}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {renderInput("nip_ppk", "NIP PPK", "19730501 199311 1 002")}
-                                        {renderInput("jabatan_ppk", "Jabatan PPK", "Pembina Utama Muda")}
+                                        {renderInput("jabatan_ppk", "Jabatan PPK", "Wakil Ketua CV. Nan Nin")}
                                     </div>
-                                    {renderInput("nama_pejabat_ba_serah", "Nama Pejabat BA Serah Terima", "AGUS PRIYADI, S.T., M.M")}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {renderInput("jabatan_pejabat_ba_serah", "Jabatan Pejabat BA Serah", "Kepala Bidang Destinasi Pariwisata")}
-                                        {renderInput("nama_instansi", "Nama Instansi / Dinas", "Dinas Pariwisata dan Kebudayaan")}
-                                    </div>
-                                    {renderInput("alamat_instansi", "Alamat Instansi", "Jalan AR Hakim Nomor 51 Jepara")}
                                 </div>
 
                                 {/* Surat Section */}

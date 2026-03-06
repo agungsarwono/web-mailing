@@ -381,10 +381,10 @@ export function buildReplacements(formData, templateId) {
         replacements["19730501 199311 1 002"] = formData.nip_ppk;
         replacements["19761017 200501 1 006"] = formData.nip_ppk;
     }
-    if (formData.jabatan_ppk) {
-        replacements["Pembina Utama Muda"] = formData.jabatan_ppk;
-        replacements["Penata Tingkat I"] = formData.jabatan_ppk;
-    }
+
+    // Globally erase default PPK titles so it only prints Name and NIP in default signatures
+    replacements["Pembina Utama Muda"] = " ";
+    replacements["Penata Tingkat I"] = " ";
 
     // --- SPMK Specifics (Hoisted to prevent "9 Agustus 2023" date string collisions with Tanggal SPK) ---
     if (formData.spmk_tanggal_selesai) { // NEW EXCLUSIVE FIELD
@@ -607,12 +607,11 @@ export function buildReplacements(formData, templateId) {
     if (formData.tanggal_ba_serah1 && templateId === 'ba_serah1') {
         replacements["Selasa tanggal Sembilan bulan Desember tahun Dua Ribu Dua Puluh Lima (09-12-2025)"] = formatDateLongIndo(formData.tanggal_ba_serah1);
     }
-    if (templateId === 'ba_serah1' && formData.nama_pejabat_ba_serah) {
-        replacements["AGUS PRIYADI, S.T., M.M"] = formData.nama_pejabat_ba_serah;
+    if (templateId === 'ba_serah1' && formData.nama_ppk) {
+        replacements["AGUS PRIYADI, S.T., M.M"] = formData.nama_ppk;
     }
-    if (templateId === 'ba_serah1' && formData.jabatan_pejabat_ba_serah) {
-        const fullJab = formData.nama_instansi ? `${formData.jabatan_pejabat_ba_serah} ${formData.nama_instansi}` : formData.jabatan_pejabat_ba_serah;
-        replacements["Pejabat Penandatangan Kontrak Dinas Pariwisata dan Kebudayaan Kabupaten Jepara"] = fullJab;
+    if (templateId === 'ba_serah1' && formData.jabatan_ppk) {
+        replacements["Pejabat Penandatangan Kontrak Dinas Pariwisata dan Kebudayaan Kabupaten Jepara"] = formData.jabatan_ppk;
     }
     if (templateId === 'ba_serah1' && formData.alamat_instansi) {
         replacements["Jalan AR Hakim Nomor 51 Jepara"] = formData.alamat_instansi;
